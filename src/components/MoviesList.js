@@ -6,7 +6,7 @@ import { EmptyMoviesList } from './EmptyMoviesList';
 const { height, width } = Dimensions.get('window');
 const IMAGES_BASE_URL = 'https://image.tmdb.org/t/p/w500/';
 
-const MoviesList = ({ data, navigation, restProps }) => {
+const MoviesList = ({ data, navigation, restProps, onMoviePress }) => {
    return (
       <FlatList
          data={data}
@@ -30,9 +30,7 @@ const MoviesList = ({ data, navigation, restProps }) => {
          }) => {
             return (
                <MovieCard
-                  onMoviePressed={() =>
-                     navigation.navigate('movieDetails', { movieItem: item })
-                  }
+                  onMoviePressed={() => onMoviePress(item)}
                   movieImage={`${IMAGES_BASE_URL}${poster_path}`}
                   movieName={title}
                   rateValue={vote_average}

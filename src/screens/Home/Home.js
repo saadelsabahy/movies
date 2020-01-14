@@ -21,6 +21,11 @@ class Home extends Component {
    getMoviesList = async categoryId => {
       this.props.getMoviesList(categoryId);
    };
+   onMoviePressed = async item => {
+      const { id } = item;
+      await this.props.saveRecentViewed(id);
+      this.props.navigation.navigate('movieDetails', { movieItem: item });
+   };
    render() {
       const {
          navigation,
@@ -28,6 +33,7 @@ class Home extends Component {
          moviesList,
          moviesListLoading,
          inputValue,
+         saveRecentViewed,
       } = this.props;
       return (
          <View style={styles.container}>
@@ -62,6 +68,7 @@ class Home extends Component {
                      marginHorizontal: 10,
                   }}
                   navigation={navigation}
+                  onMoviePress={this.onMoviePressed}
                />
             )}
          </View>

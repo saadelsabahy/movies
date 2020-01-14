@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "babel-preset-expo": "~8.0.0"
+    "babel-preset-expo": "~8.0.0",
+    "reactotron-react-native": "^4.0.2",
+    "reactotron-redux": "^3.1.2"
   },
   "private": true
 }

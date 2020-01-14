@@ -1,3 +1,8 @@
+if (__DEV__) {
+   import('./ReactotronConfig').then(() =>
+      console.log('Reactotron Configured')
+   );
+}
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigation';

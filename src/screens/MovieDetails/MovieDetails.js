@@ -9,11 +9,14 @@ import {
 } from 'react-native';
 import { BACKGROUND_COLOR, FONT_COLOR } from '../../constants/style';
 import { Header } from '../../components';
+import { connect } from 'react-redux';
+import * as Actions from '../../store/actions';
 
 const IMAGES_BASE_URL = 'https://image.tmdb.org/t/p/w500/';
 class MovieDetails extends Component {
    render() {
       const {
+         views,
          navigation,
          navigation: {
             state: {
@@ -33,6 +36,7 @@ class MovieDetails extends Component {
             },
          },
       } = this.props;
+
       return (
          <View style={styles.container}>
             <Header onIconLeftPressed={() => navigation.goBack()} />
@@ -48,7 +52,7 @@ class MovieDetails extends Component {
                   </View>
                   <View style={styles.movieDetailsContainer}>
                      <Text style={styles.movieName}>{title}</Text>
-                     <Text style={styles.movieName}>rthhh</Text>
+                     <Text style={styles.movieName}>{0}</Text>
                      <Text style={styles.movieName}>rthhh</Text>
                   </View>
                </View>
@@ -91,4 +95,8 @@ const styles = StyleSheet.create({
       color: FONT_COLOR,
    },
 });
-export default MovieDetails;
+const mapStateToProps = state => ({
+   views: state.History.viewed,
+});
+
+export default connect(mapStateToProps, Actions)(MovieDetails);

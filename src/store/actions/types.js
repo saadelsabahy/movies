@@ -10,3 +10,5 @@ export const SEARCH_MOVIE_SUCCESS = 'search_movie_success';
 export const SEARCH_MOVIE_FAILD = 'search_movie_faild';
 export const INCREASE_PAGE = 'increase_page';
 export const EMPTY_SEARCH_DATA = 'empty_search_data';
+export const INCREASE_VIEWS = 'increase_views';
+export const ADD_TO_HISTORY = 'add_to_history';
