@@ -4,3 +4,4 @@ export const FONT_COLOR = '#fff';
 export const PLACEHOLDER_COLOR = '#999';
 export const BORDER_COLOR = '#999';
 export const MOVIE_CARD_COLOR = '#222';
+export const HEADER_COLOR = '#222';

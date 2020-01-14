@@ -1,28 +1,59 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, Image } from 'react-native';
+import {
+   Text,
+   View,
+   StyleSheet,
+   ScrollView,
+   Image,
+   Platform,
+} from 'react-native';
 import { BACKGROUND_COLOR, FONT_COLOR } from '../../constants/style';
+import { Header } from '../../components';
 
+const IMAGES_BASE_URL = 'https://image.tmdb.org/t/p/w500/';
 class MovieDetails extends Component {
    render() {
+      const {
+         navigation,
+         navigation: {
+            state: {
+               params: {
+                  movieItem: {
+                     poster_path,
+                     id,
+                     adult,
+                     media_type,
+                     title,
+                     overview,
+                     vote_average,
+                     release_date,
+                     vote_count,
+                  },
+               },
+            },
+         },
+      } = this.props;
       return (
-         <ScrollView style={styles.container}>
-            <View style={styles.movieInformationContainer}>
-               <View style={styles.imageContainer}>
-                  <Image
-                     source={{
-                        uri:
-                           'https://www.geeky-gadgets.com/wp-content/uploads/2010/04/iphone-google-images.jpg',
-                     }}
-                     style={styles.image}
-                  />
+         <View style={styles.container}>
+            <Header onIconLeftPressed={() => navigation.goBack()} />
+            <ScrollView>
+               <View style={styles.movieInformationContainer}>
+                  <View style={styles.imageContainer}>
+                     <Image
+                        source={{
+                           uri: IMAGES_BASE_URL + poster_path,
+                        }}
+                        style={styles.image}
+                     />
+                  </View>
+                  <View style={styles.movieDetailsContainer}>
+                     <Text style={styles.movieName}>{title}</Text>
+                     <Text style={styles.movieName}>rthhh</Text>
+                     <Text style={styles.movieName}>rthhh</Text>
+                  </View>
                </View>
-               <View style={styles.movieDetailsContainer}>
-                  <Text style={styles.movieName}>rthhh</Text>
-                  <Text style={styles.movieName}>rthhh</Text>
-                  <Text style={styles.movieName}>rthhh</Text>
-               </View>
-            </View>
-         </ScrollView>
+            </ScrollView>
+         </View>
       );
    }
 }
@@ -30,6 +61,10 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       backgroundColor: BACKGROUND_COLOR,
+      shadowOffset: { width: 0, height: 10 },
+      shadowColor: BACKGROUND_COLOR,
+      shadowOpacity: 0.7,
+      elevation: 5,
    },
    movieInformationContainer: {
       flex: 0.6,

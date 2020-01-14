@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { BACKGROUND_COLOR, SECOND_COLOR } from '../../constants/style';
+import { connect } from 'react-redux';
+import * as Actions from '../../store/actions';
 
 class Splash extends Component {
    componentDidMount() {
-      setTimeout(() => {
+      setTimeout(async () => {
+         await this.props.getMoviesCategories();
          this.props.navigation.navigate('appStack');
       }, 1500);
    }
@@ -28,5 +31,8 @@ const styles = StyleSheet.create({
       fontSize: 45,
    },
 });
+const mapStateToProps = state => ({
+   getCtegoriesLoading: state.Categories.loading,
+});
 
-export default Splash;
+export default connect(mapStateToProps, Actions)(Splash);

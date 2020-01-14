@@ -7,7 +7,13 @@ import {
 } from '../constants/style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const MovieCard = ({ movieImage, iconRteColor, onMoviePressed }) => {
+const MovieCard = ({
+   movieImage,
+   iconRteColor,
+   onMoviePressed,
+   movieName,
+   rateValue,
+}) => {
    return (
       <TouchableOpacity onPress={onMoviePressed}>
          <View style={styles.container}>
@@ -15,22 +21,21 @@ const MovieCard = ({ movieImage, iconRteColor, onMoviePressed }) => {
                <Image
                   style={styles.image}
                   source={{
-                     uri:
-                        'https://www.geeky-gadgets.com/wp-content/uploads/2010/04/iphone-google-images.jpg',
+                     uri: movieImage,
                   }}
                />
             </View>
-            <View style={styles.detailsContainer}>
-               <Text style={styles.movieName}>breaking bad </Text>
+            {/*  <View style={styles.detailsContainer}>
+               <Text style={styles.movieName}>{movieName} </Text>
                <View style={styles.rateContainer}>
                   <Icon
                      name={'star'}
                      size={17}
                      color={iconRteColor || '#ff0'}
                   />
-                  <Text style={styles.rateNumber}>9.5</Text>
+                  <Text style={styles.rateNumber}>{rateValue}</Text>
                </View>
-            </View>
+            </View> */}
          </View>
       </TouchableOpacity>
    );
@@ -43,13 +48,14 @@ const styles = StyleSheet.create({
       marginVertical: 10,
    },
    imageContainer: {
-      height: 200,
+      height: 165,
       width: '100%',
+      backgroundColor: MOVIE_CARD_COLOR,
    },
    image: {
       width: '100%',
       height: '100%',
-      resizeMode: 'cover',
+      resizeMode: 'contain',
    },
    detailsContainer: {
       padding: 3,

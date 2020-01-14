@@ -1,24 +1,49 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Dimensions } from 'react-native';
 import MovieCard from './MovieCard';
+import { EmptyMoviesList } from './EmptyMoviesList';
 
-const MoviesList = ({ data, navigation }) => {
+const { height, width } = Dimensions.get('window');
+const IMAGES_BASE_URL = 'https://image.tmdb.org/t/p/w500/';
+
+const MoviesList = ({ data, navigation, restProps }) => {
    return (
       <FlatList
          data={data}
-         keyExtractor={(item, index) => `${item.id + item.name}`}
-         renderItem={({ item, index }) => {
+         style={{ flex: 1 }}
+         contentContainerStyle={{ flexGrow: 1 }}
+         keyExtractor={(item, index) => `${item.id + item.title}`}
+         renderItem={({
+            item,
+            item: {
+               poster_path,
+               id,
+               adult,
+               media_type,
+               title,
+               overview,
+               vote_average,
+               release_date,
+               vote_count,
+            },
+            index,
+         }) => {
             return (
                <MovieCard
                   onMoviePressed={() =>
                      navigation.navigate('movieDetails', { movieItem: item })
                   }
+                  movieImage={`${IMAGES_BASE_URL}${poster_path}`}
+                  movieName={title}
+                  rateValue={vote_average}
                />
             );
          }}
          numColumns={3}
+         ListEmptyComponent={<EmptyMoviesList noDataText={'no movies yet'} />}
+         {...restProps}
       />
    );
 };
 
-export default MoviesList;
+export { MoviesList };

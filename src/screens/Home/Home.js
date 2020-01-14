@@ -1,91 +1,34 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
-import { SearchInput } from '../../components';
-import { BACKGROUND_COLOR } from '../../constants/style';
+import {
+   Text,
+   View,
+   StyleSheet,
+   ScrollView,
+   ActivityIndicator,
+} from 'react-native';
+import { SearchInput, MoviesList } from '../../components';
+import { BACKGROUND_COLOR, SECOND_COLOR } from '../../constants/style';
 import CategoriesBar from '../../components/CategoriesBar';
 import MovieCard from '../../components/MovieCard';
-import MoviesList from '../../components/MoviesList';
-const GENERS = [
-   {
-      id: 28,
-      name: 'Action',
-   },
-   {
-      id: 12,
-      name: 'Adventure',
-   },
-   {
-      id: 16,
-      name: 'Animation',
-   },
-   {
-      id: 35,
-      name: 'Comedy',
-   },
-   {
-      id: 80,
-      name: 'Crime',
-   },
-   {
-      id: 99,
-      name: 'Documentary',
-   },
-   {
-      id: 18,
-      name: 'Drama',
-   },
-   {
-      id: 10751,
-      name: 'Family',
-   },
-   {
-      id: 14,
-      name: 'Fantasy',
-   },
-   {
-      id: 36,
-      name: 'History',
-   },
-   {
-      id: 27,
-      name: 'Horror',
-   },
-   {
-      id: 10402,
-      name: 'Music',
-   },
-   {
-      id: 9648,
-      name: 'Mystery',
-   },
-   {
-      id: 10749,
-      name: 'Romance',
-   },
-   {
-      id: 878,
-      name: 'Science Fiction',
-   },
-   {
-      id: 10770,
-      name: 'TV Movie',
-   },
-   {
-      id: 53,
-      name: 'Thriller',
-   },
-   {
-      id: 10752,
-      name: 'War',
-   },
-   {
-      id: 37,
-      name: 'Western',
-   },
-];
+import { connect } from 'react-redux';
+import * as Actions from '../../store/actions';
+
 class Home extends Component {
+   async componentDidMount() {
+      const { categories } = this.props;
+      await this.getMoviesList(categories[0].id);
+   }
+   getMoviesList = async categoryId => {
+      this.props.getMoviesList(categoryId);
+   };
    render() {
-      const { navigation } = this.props;
+      const {
+         navigation,
+         categories,
+         moviesList,
+         moviesListLoading,
+         inputValue,
+      } = this.props;
       return (
          <View style={styles.container}>
             <SearchInput
@@ -97,21 +40,30 @@ class Home extends Component {
                }}
             />
             <CategoriesBar
-               data={GENERS}
-               onItemPressed={(item, name, id) => {
-                  console.log(item);
+               data={categories}
+               onItemPressed={id => {
+                  this.getMoviesList(id);
                }}
             />
-
-            <MoviesList
-               data={GENERS}
-               style={{
-                  flex: 1,
-                  marginVertical: 10,
-                  marginHorizontal: 10,
-               }}
-               navigation={navigation}
-            />
+            {moviesListLoading ? (
+               <View style={{ flex: 1, justifyContent: 'center' }}>
+                  <ActivityIndicator
+                     color={SECOND_COLOR}
+                     size="large"
+                     style={{ alignSelf: 'center' }}
+                  />
+               </View>
+            ) : (
+               <MoviesList
+                  data={moviesList.items}
+                  style={{
+                     flex: 1,
+                     marginVertical: 10,
+                     marginHorizontal: 10,
+                  }}
+                  navigation={navigation}
+               />
+            )}
          </View>
       );
    }
@@ -122,4 +74,11 @@ const styles = StyleSheet.create({
       backgroundColor: BACKGROUND_COLOR,
    },
 });
-export default Home;
+const mapStateToProps = state => ({
+   categories: state.Categories.geners,
+   moviesList: state.MoviesList.movies,
+   moviesListLoading: state.MoviesList.loading,
+   searchValue: state.SearchMovies.inputValue,
+});
+
+export default connect(mapStateToProps, Actions)(Home);

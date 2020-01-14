@@ -22,7 +22,7 @@ const CategoriesBar = ({ data, onItemPressed }) => {
                      activeOpacity={0.99}
                      onPress={() => {
                         setActiveItem(item.name);
-                        onItemPressed(item, name, id);
+                        onItemPressed(id);
                      }}>
                      <View
                         style={

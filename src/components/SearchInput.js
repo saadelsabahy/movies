@@ -41,7 +41,7 @@ const SearchInput = ({
          <TextInput
             placeholder={placeholder}
             value={value}
-            onChange={onSearchInputChange}
+            onChangeText={onSearchInputChange}
             style={[styles.textInput, inputStyle]}
             placeholderTextColor={placeholderTextColor || PLACEHOLDER_COLOR}
             {...inputProps}
