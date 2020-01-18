@@ -8,7 +8,7 @@ import Reactotron from '../../ReactotronConfig';
 const persistConfig = {
    key: 'root',
    storage: AsyncStorage,
-   whitelist: [],
+   whitelist: ['History'],
 };
 const PersistReducer = persistReducer(persistConfig, MainReducer);
 

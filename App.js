@@ -11,6 +11,8 @@ import { AppLoading, SplashScreen } from 'expo';
 import { Provider } from 'react-redux';
 import { store, persistor } from './src/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Remote debugger']);
 
 export default function App() {
    useEffect(() => {

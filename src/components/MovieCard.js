@@ -15,7 +15,7 @@ const MovieCard = ({
    rateValue,
 }) => {
    return (
-      <TouchableOpacity onPress={onMoviePressed}>
+      <TouchableOpacity onPress={onMoviePressed} activeOpacity={0.99}>
          <View style={styles.container}>
             <View style={styles.imageContainer}>
                <Image

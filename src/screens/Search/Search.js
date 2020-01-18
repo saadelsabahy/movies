@@ -19,6 +19,18 @@ class Search extends Component {
    componentWillUnmount() {
       this.props.searchInputChange('');
    }
+   shouldComponentUpdate(nextProps, nextState) {
+      if (nextProps !== this.props) {
+         return true;
+      }
+      return false;
+   }
+   onMoviePressed = async item => {
+      const { id } = item;
+      await this.props.saveRecentViewed(id);
+      await this.props.getViewsById(id);
+      this.props.navigation.navigate('movieDetails', { movieItem: item });
+   };
    render() {
       const {
          navigation,
@@ -27,7 +39,7 @@ class Search extends Component {
          searchLoading,
          page,
       } = this.props;
-      console.log('searched', searchData, page);
+      console.log('searched', searchLoading, page);
 
       return (
          <View style={styles.container}>
@@ -46,20 +58,8 @@ class Search extends Component {
                searchBarContainerStyle={styles.searchBarContainerStyle}
             />
             {!searchData.length ? (
-               <View
-                  style={{
-                     flex: 1,
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                  }}>
-                  <Text
-                     style={{
-                        color: FONT_COLOR,
-                        fontSize: 18,
-                        letterSpacing: 1.5,
-                        textTransform: 'capitalize',
-                        marginBottom: 40,
-                     }}>
+               <View style={styles.beforSearchTextContainer}>
+                  <Text style={styles.beforSearchText}>
                      search the movie you want
                   </Text>
                </View>
@@ -68,15 +68,10 @@ class Search extends Component {
                   data={searchData}
                   navigation={navigation}
                   restProps={{
-                     onEndReachedThreshold: 0.5,
+                     onEndReachedThreshold: 1,
                      onEndReached: () => this.fetchMore(),
                      ListFooterComponent: searchLoading ? (
-                        <View
-                           style={{
-                              flex: 1,
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                           }}>
+                        <View style={styles.footerComponentContainer}>
                            <ActivityIndicator
                               color={SECOND_COLOR}
                               size="large"
@@ -84,6 +79,7 @@ class Search extends Component {
                         </View>
                      ) : null,
                   }}
+                  onMoviePress={item => this.onMoviePressed(item)}
                />
             )}
          </View>
@@ -102,6 +98,23 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: BORDER_COLOR,
       backgroundColor: 'transparent',
+   },
+   footerComponentContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+   },
+   beforSearchTextContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+   },
+   beforSearchText: {
+      color: FONT_COLOR,
+      fontSize: 18,
+      letterSpacing: 1.5,
+      textTransform: 'capitalize',
+      marginBottom: 40,
    },
 });
 const mapStateToProps = state => ({

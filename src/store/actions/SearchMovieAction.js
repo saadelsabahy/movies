@@ -8,6 +8,7 @@ import {
 } from './types';
 import Movies from '../../apis/Movies';
 const API_KEY = '228864d8490c0abd15c4d5bfde6f136c';
+
 export const searchInputChange = (inputText, page, language) => (
    dispatch,
    getState
@@ -27,38 +28,30 @@ const searchMovie = async (
    language
 ) => {
    const { searchMovieData } = getState().SearchMovies;
-   if (searchText === '') {
-      dispatch({ type: EMPTY_SEARCH_DATA });
-   } else {
-      try {
-         dispatch({ type: SEARCH_LOADING, payload: true });
-         let searchResult = await Movies.get(
-            `search/movie?api_key=${API_KEY}&language=${language ||
-               'ar'}-US&query=${searchText}&page=${page ||
-               1}&include_adult=false`
-         );
 
-         const {
-            data: { results },
-         } = searchResult;
-         /*  console.log(
-            results[results.length - 1].id ==
-               searchMovieData[searchMovieData.length - 1].id
-         ); */
+   try {
+      dispatch({ type: SEARCH_LOADING, payload: true });
+      let searchResult = await Movies.get(
+         `search/movie?api_key=${API_KEY}&language=${language ||
+            'ar'}-US&query=${searchText}&page=${page || 1}&include_adult=false`
+      );
 
-         dispatch({
-            type: SEARCH_MOVIE_SUCCESS,
-            payload: !searchMovieData.length
-               ? results
-               : [...results, ...searchMovieData],
-         });
-         dispatch({ type: SEARCH_LOADING, payload: false });
-      } catch (e) {
-         dispatch({ type: SEARCH_LOADING, payload: false });
-         dispatch({ type: SEARCH_MOVIE_FAILD });
+      const {
+         data: { results },
+      } = searchResult;
 
-         console.log(e);
-      }
+      dispatch({
+         type: SEARCH_MOVIE_SUCCESS,
+         payload: !searchMovieData.length
+            ? results
+            : [...searchMovieData, ...results],
+      });
+      dispatch({ type: SEARCH_LOADING, payload: false });
+   } catch (e) {
+      dispatch({ type: SEARCH_LOADING, payload: false });
+      dispatch({ type: SEARCH_MOVIE_FAILD });
+
+      console.log(e);
    }
 };
 
@@ -73,5 +66,7 @@ export const fetchMore = (searchText, page, language) => async (
    dispatch,
    getState
 ) => {
+   console.log(page);
+
    searchMovie({ dispatch, getState }, searchText, page, language);
 };

@@ -12,3 +12,4 @@ export const INCREASE_PAGE = 'increase_page';
 export const EMPTY_SEARCH_DATA = 'empty_search_data';
 export const INCREASE_VIEWS = 'increase_views';
 export const ADD_TO_HISTORY = 'add_to_history';
+export const SET_MOVIE_VIEWS = 'set_movies_history';

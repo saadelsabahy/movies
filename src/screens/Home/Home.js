@@ -24,6 +24,7 @@ class Home extends Component {
    onMoviePressed = async item => {
       const { id } = item;
       await this.props.saveRecentViewed(id);
+      await this.props.getViewsById(id);
       this.props.navigation.navigate('movieDetails', { movieItem: item });
    };
    render() {
@@ -87,5 +88,4 @@ const mapStateToProps = state => ({
    moviesListLoading: state.MoviesList.loading,
    searchValue: state.SearchMovies.inputValue,
 });
-
 export default connect(mapStateToProps, Actions)(Home);

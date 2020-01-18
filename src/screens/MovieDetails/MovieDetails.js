@@ -6,14 +6,31 @@ import {
    ScrollView,
    Image,
    Platform,
+   Button,
 } from 'react-native';
 import { BACKGROUND_COLOR, FONT_COLOR } from '../../constants/style';
 import { Header } from '../../components';
 import { connect } from 'react-redux';
 import * as Actions from '../../store/actions';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
 const IMAGES_BASE_URL = 'https://image.tmdb.org/t/p/w500/';
 class MovieDetails extends Component {
+   share(imageSource) {
+      FileSystem.downloadAsync(
+         imageSource,
+         FileSystem.documentDirectory + '.jpeg'
+      )
+         .then(({ uri }) => {
+            console.log('Finished downloading to ', uri);
+
+            Sharing.shareAsync(uri);
+         })
+         .catch(error => {
+            console.error(error);
+         });
+   }
    render() {
       const {
          views,
@@ -52,11 +69,15 @@ class MovieDetails extends Component {
                   </View>
                   <View style={styles.movieDetailsContainer}>
                      <Text style={styles.movieName}>{title}</Text>
-                     <Text style={styles.movieName}>{0}</Text>
+                     <Text style={styles.movieName}>{views}</Text>
                      <Text style={styles.movieName}>rthhh</Text>
                   </View>
                </View>
             </ScrollView>
+            <Button
+               onPress={() => this.share(IMAGES_BASE_URL + poster_path)}
+               title="Share"
+            />
          </View>
       );
    }
@@ -96,7 +117,7 @@ const styles = StyleSheet.create({
    },
 });
 const mapStateToProps = state => ({
-   views: state.History.viewed,
+   views: state.History.views,
 });
 
 export default connect(mapStateToProps, Actions)(MovieDetails);
